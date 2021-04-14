@@ -5,8 +5,10 @@ filetype indent on
 "map Esc key to 'jj'
 imap jj <Esc>
 
+" Disbale 'ZZ' command to save and quit
 nnoremap Z <C-o>:echom "--> :w :q <-- "<CR>
 nnoremap ZZ <C-o>:echom "--> :w :q <-- "<CR>
+" move file up and down with arrows
 nnoremap <Up> <C-y>
 nnoremap <Down> <C-e>
 
@@ -42,53 +44,40 @@ nnoremap <A-s> <C-W>-
 
 "syntax hightlighting
 syntax on  
- 
-" tabs
-set tabstop=4 softtabstop=4
-set shiftwidth=4
-set expandtab
-set smartindent
 
 " closing brace {}
 inoremap {} {<CR>}<Esc>ko
 inoremap { {   }<Esc>hhi
 inoremap {{   {{   }}<Esc>hhhi
 
+" tabs
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set expandtab
+set smartindent
 
-"line number
-set number  
-
-"no compatibility to Vi
-set nocompatible 
-
+set number  " line number
+set nocompatible   "no compatibility to Vi
 set ruler " Show file stats
-
-" reletive line numbers
-set relativenumber
-set nu
+set relativenumber  " reletive line numbers
 set nowrap "no wrap when line exceeds screen  
 set smartcase "case-sensitive search if search patter contains uppercase character 
+" Persist changes in undodir. Can access the changes even after reboot
 set noswapfile
-
 set nobackup
-set undodir=~/.vim/undodir
 set undofile
-
-" Turn on the Wild menu
-"set wildmenu
-
-" Highlight search results
-set hlsearch
-
-" Show matching brackets when text indicator is over them
-set showmatch
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
+set undodir=~/.vim/undodir
+"set wildmenu  " Turn on the Wild menu
+set colorcolumn=80
+set hlsearch  " Highlight search results
+set showmatch  " Show matching brackets when text indicator is over them
+set mat=2  " How many tenths of a second to blink when matching brackets
 set incsearch "incremental search
+"set cursorline  " highlight current line with underline
+"set exrc  " execute project specific .vimrc
 
-" highlight current line with underline
-"set cursorline
+call plug#begin('~/.vim/plugged')
+" Make sure you use single quotes
 
-" execute project specific .vimrc
-"set exrc
+call plug#end()
+
