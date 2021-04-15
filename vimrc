@@ -79,5 +79,13 @@ set incsearch "incremental search
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 
+Plug 'vim-airline/vim-airline'
+" Themes
+Plug 'arcticicestudio/nord-vim'
+Plug 'morhetz/gruvbox'
 call plug#end()
+
+colorscheme gruvbox " 'nord', 
+set bg=dark
+
 
