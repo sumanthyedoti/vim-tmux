@@ -92,17 +92,30 @@ call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-fugitive'
 Plug 'mbbill/undotree'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
+Plug 'ryanoasis/vim-devicons'
+Plug 'chemzqm/vim-jsx-improve'
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
+" only vim plugins
+if !has('nvim')
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    Plug 'junegunn/fzf.vim'
+endif
+" NeoVim plugins
+if has('nvim')
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+endif
 call plug#end()
 
+nnoremap <C-p> :GFiles<CR>
+if has('nvim')
+    nmap <leader>gd <Plug>(coc-defination)
+    nmap <leader>gr <Plug>(coc-references)
+endif
 
 nnoremap <leader>ut :UndotreeToggle<CR>
-
 
 colorscheme gruvbox " 'nord', 'gruvbox'
 set bg=dark  " 'dark', 'light'
