@@ -76,6 +76,8 @@ set showmatch  " Show matching brackets when text indicator is over them
 set mat=2  " How many tenths of a second to blink when matching brackets
 set incsearch " incremental search
 set scrolloff=4  " scroll offset
+set cmdheight=2
+set signcolumn=yes
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
 
@@ -91,6 +93,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-fugitive'
 Plug 'mbbill/undotree'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'vim-airline/vim-airline'
 " Themes
 Plug 'arcticicestudio/nord-vim'
