@@ -4,6 +4,7 @@ filetype indent on
 
 "map Esc key to 'jj'
 imap jj <Esc>
+let mapleader = " "  " map leader key (\) to Space bar
 
 " Disbale 'ZZ' command to save and quit
 nnoremap Z <C-o>:echom "--> :w :q <-- "<CR>
@@ -49,6 +50,7 @@ syntax on
 inoremap {} {<CR>}<Esc>ko
 inoremap { {   }<Esc>hhi
 inoremap {{   {{   }}<Esc>hhhi
+inoremap ( ()<Esc>i
 
 " tabs
 set tabstop=4 softtabstop=4
@@ -72,20 +74,33 @@ set colorcolumn=80
 set hlsearch  " Highlight search results
 set showmatch  " Show matching brackets when text indicator is over them
 set mat=2  " How many tenths of a second to blink when matching brackets
-set incsearch "incremental search
+set incsearch " incremental search
+set scrolloff=4  " scroll offset
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
 
+" To derive project root
+if executable('rg')
+    let g:rg_derive_root='true'
+endif
+
+"let g:netrw_banner = 0  " no help information at top
+
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
-
+Plug 'tpope/vim-fugitive'
+Plug 'mbbill/undotree'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'vim-airline/vim-airline'
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
 call plug#end()
 
-colorscheme gruvbox " 'nord', 
-set bg=dark
 
+nnoremap <leader>ut :UndotreeToggle<CR>
+
+
+colorscheme gruvbox " 'nord', 'gruvbox'
+set bg=dark  " 'dark', 'light'
 
