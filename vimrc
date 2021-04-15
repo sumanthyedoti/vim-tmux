@@ -1,7 +1,6 @@
 " Enable filetype plugins
 filetype plugin on
-filetype indent on
-
+filetype indent on:
 
 syntax on  " syntax hightlighting
 
@@ -110,8 +109,6 @@ call plug#end()
 
 let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
 
-" Automaticaly close nvim if NERDTree is only thing left open
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Toggle NERDTree
 nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 
@@ -125,8 +122,14 @@ let g:fzf_action = {
 
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
-
+source $HOME/.vim/coc.vim
 
 colorscheme gruvbox " 'nord', 'gruvbox'
 set bg=dark  " 'dark', 'light'
+
+
+" Auto commands
+" -------------
+" Close nvim if NERDTree is only thing left open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
