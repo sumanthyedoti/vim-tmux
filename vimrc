@@ -44,8 +44,8 @@ nnoremap <C-]> <C-W>>
 nnoremap <leader>. :vertical resize +5<CR>
 nnoremap <leader>, :vertical resize -5<CR>
 " Sizing window vertically
-nnoremap } :resize +2<CR>
-nnoremap { :resize -2<CR>
+nnoremap <S-i> :resize +2<CR>
+nnoremap <S-u> :resize -2<CR>
 " open File Explorer
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
