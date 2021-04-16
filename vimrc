@@ -1,6 +1,6 @@
 " Enable filetype plugins
 filetype plugin on
-filetype indent on:
+filetype indent on
 
 syntax on  " syntax hightlighting
 
@@ -11,6 +11,16 @@ let mapleader = " "  " map leader key (\) to Space bar
 " Disbale 'ZZ' command to save and quit
 nnoremap Z <C-o>:echom "--> :w :q <-- "<CR>
 nnoremap ZZ <C-o>:echom "--> :w :q <-- "<CR>
+" Insert mode navigation
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+" disable arrow in insert mode
+inoremap <Up>     <C-o>:echom "--> k <-- "<CR>
+inoremap <Down>   <C-o>:echom "--> j <-- "<CR>
+inoremap <Right>  <C-o>:echom "--> l <-- "<CR>
+inoremap <Left>   <C-o>:echom "--> h <-- "<CR>
 " hide search(find) highlight
 nnoremap <leader>nf :nohl<CR>
 " move file up and down with arrows
@@ -24,11 +34,6 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
-
-inoremap <Up>     <C-o>:echom "--> k <-- "<CR>
-inoremap <Down>   <C-o>:echom "--> j <-- "<CR>
-inoremap <Right>  <C-o>:echom "--> l <-- "<CR>
-inoremap <Left>   <C-o>:echom "--> h <-- "<CR>
 " closing brace {}
 inoremap {} {<CR>}<Esc>ko
 inoremap { {   }<Esc>hhi
@@ -95,6 +100,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'mbbill/undotree'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'chemzqm/vim-jsx-improve'
 Plug 'leafgarland/typescript-vim'
@@ -102,23 +109,26 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-gitgutter'
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
 call plug#end()
 
-let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
+let g:coc_global_extensions = [
+    \ 'coc-emmet', 
+    \ 'coc-css', 
+    \ 'coc-html', 
+    \ 'coc-json', 
+    \ 'coc-prettier', 
+    \ 'coc-tsserver', 
+    \ 'coc-snippets',
+    \ 'coc-pairs',
+    \]
 
-" Toggle NERDTree
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 
 nnoremap <leader>ut :UndotreeToggle<CR>
 nnoremap <C-p> :GFiles<CR>
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-s': 'split',
-  \ 'ctrl-v': 'vsplit'
-  \}
 
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
@@ -127,9 +137,11 @@ source $HOME/.vim/coc.vim
 colorscheme gruvbox " 'nord', 'gruvbox'
 set bg=dark  " 'dark', 'light'
 
-
-" Auto commands
-" -------------
+" Toggle NERDTree
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 " Close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeMinimalUI = 1
+let g:NERDTreeIgnore = []
+let g:NERDTreeStatusline = ''
