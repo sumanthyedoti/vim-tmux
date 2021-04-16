@@ -70,10 +70,11 @@ set smartindent
 
 set number  " line number
 set nocompatible   "no compatibility to Vi
+set hidden
 set ruler " Show file stats
 set relativenumber  " reletive line numbers
-set nowrap "no wrap when line exceeds screen  
-set smartcase "case-sensitive search if search patter contains uppercase character 
+set nowrap "no wrap when line exceeds screen
+set smartcase "case-sensitive search if search patter contains uppercase character
 " Persist changes in undodir. Can access the changes even after reboot
 set noswapfile
 set nobackup
@@ -82,19 +83,32 @@ set undodir=~/.vim/undodir
 "set wildmenu  " Turn on the Wild menu
 set colorcolumn=80
 set hlsearch  " Highlight search results
+set incsearch " incremental search
 set showmatch  " Show matching brackets when text indicator is over them
 set mat=2  " How many tenths of a second to blink when matching brackets
-set incsearch " incremental search
 set scrolloff=4  " scroll offset
 set cmdheight=2
 set signcolumn=yes
+set completeopt=menuone
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
+"set guicursor=  " use block cursor
 
 " To derive project root
 if executable('rg')
     let g:rg_derive_root='true'
 endif
+
+fun! TrimWhitespace()
+    let l:save = winsaveview()
+    keeppatterns %s/\s\+$//e
+    call winrestview(l:save)
+endfun
+
+augroup SUMANTH_YEDOTI
+    autocmd!
+    autocmd BufWritePre * :call TrimWhitespace()
+augroup END
 
 "let g:netrw_banner = 0  " no help information at top
 
@@ -113,19 +127,19 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'airblade/vim-gitgutter'
+Plug 'preservim/nerdcommenter'
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
 call plug#end()
 
 let g:coc_global_extensions = [
-    \ 'coc-emmet', 
-    \ 'coc-css', 
-    \ 'coc-html', 
-    \ 'coc-json', 
-    \ 'coc-prettier', 
-    \ 'coc-tsserver', 
+    \ 'coc-emmet',
+    \ 'coc-css',
+    \ 'coc-html',
+    \ 'coc-json',
+    \ 'coc-prettier',
+    \ 'coc-tsserver',
     \ 'coc-snippets',
     \ 'coc-pairs',
     \]
@@ -136,9 +150,13 @@ nnoremap <C-p> :GFiles<CR>
 
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
-source $HOME/.vim/coc.vim
+
+if has('nvim')
+    source $HOME/.vim/coc.vim
+endif
 
 colorscheme gruvbox " 'nord', 'gruvbox'
+highlight Normal guibg=none
 set bg=dark  " 'dark', 'light'
 
 " Toggle NERDTree
