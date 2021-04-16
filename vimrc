@@ -34,6 +34,20 @@ nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
+"nnoremap <leader>h :wincmd h<CR>
+"nnoremap <leader>j :wincmd j<CR>
+"nnoremap <leader>k :wincmd k<CR>
+"nnoremap <leader>l :wincmd l<CR>
+" Sizing window horizontally
+nnoremap <C-[> <C-W><
+nnoremap <C-]> <C-W>>
+nnoremap <leader>. :vertical resize +5<CR>
+nnoremap <leader>, :vertical resize -5<CR>
+" Sizing window vertically
+nnoremap } :resize +2<CR>
+nnoremap { :resize -2<CR>
+" open File Explorer
+nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
 inoremap {} {<CR>}<Esc>ko
 inoremap { {   }<Esc>hhi
@@ -47,16 +61,6 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " Make windows to be basically the same size
 nnoremap <leader>= <C-w>=
-" Sizing window horizontally
-nnoremap <c-,> <C-W><
-nnoremap <c-.> <C-W>>
-nnoremap <A-,> <C-W>5<
-nnoremap <A-.> <C-W>5>
-" Sizing window vertically
-" taller
-nnoremap <A-t> <C-W>+
-" shorter
-nnoremap <A-s> <C-W>-
 
 " tabs
 set tabstop=4 softtabstop=4
