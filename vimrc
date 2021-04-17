@@ -114,6 +114,7 @@ augroup END
 
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
+Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'mbbill/undotree'
 Plug 'vim-airline/vim-airline'
