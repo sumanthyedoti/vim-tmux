@@ -111,7 +111,7 @@ function! ToggleRelativeNumber()
         echo "Relative numbers turned on."
     endif
 endfunction
-nnoremap <leader>ren :call ToggleRelativeNumber()<CR>
+nnoremap <silent> <leader>ren :call ToggleRelativeNumber()<CR>
 
 fun! TrimWhitespace()
     let l:save = winsaveview()
@@ -124,8 +124,8 @@ augroup SUMANTH_YEDOTI
     autocmd BufWritePre * :call TrimWhitespace()
 augroup END
 
-"let g:netrw_banner = 0  " no help information at top
-
+let g:netrw_banner = 0  " no help information at top for netrw
+let loaded_netrwPlugin = 1  " disable netrw
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
@@ -166,6 +166,7 @@ nnoremap <C-p> :GFiles<CR>
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
 
+source $HOME/.vim/nerdcommenter.vim
 if has('nvim')
     source $HOME/.vim/coc.vim
 endif
@@ -181,4 +182,3 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
-let g:NERDTreeStatusline = ''
