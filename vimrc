@@ -21,8 +21,6 @@ inoremap <Up>     <C-o>:echom "--> k <-- "<CR>
 inoremap <Down>   <C-o>:echom "--> j <-- "<CR>
 inoremap <Right>  <C-o>:echom "--> l <-- "<CR>
 inoremap <Left>   <C-o>:echom "--> h <-- "<CR>
-" hide search(find) highlight
-nnoremap <leader>nf :nohl<CR>
 " move file up and down with arrows
 nnoremap <Up> <C-y>
 nnoremap <Down> <C-e>
@@ -46,6 +44,11 @@ nnoremap <leader>, :vertical resize -5<CR>
 " Sizing window vertically
 nnoremap <S-i> :resize +2<CR>
 nnoremap <S-u> :resize -2<CR>
+" hide search(find) highlight
+nnoremap <leader>h :nohl<CR>:echo "Search Cleared"<CR>
+" toggle line number between relative and norelative
+nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
+nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
 " open File Explorer
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
