@@ -102,6 +102,17 @@ if executable('rg')
     let g:rg_derive_root='true'
 endif
 
+function! ToggleRelativeNumber()
+    if &relativenumber
+        set norelativenumber
+        echo "Reletive numbers turned off."
+    else
+        set relativenumber
+        echo "Relative numbers turned on."
+    endif
+endfunction
+nnoremap <leader>ren :call ToggleRelativeNumber()<CR>
+
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
