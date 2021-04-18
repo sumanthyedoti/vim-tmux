@@ -27,6 +27,8 @@ nnoremap <Down> <C-e>
 " Switch between tabs
 nnoremap <Right> gt
 nnoremap <Left>  gT
+" close tabs
+nnoremap <C-w> :tabclose<CR>
 " split window navigation
 nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
@@ -36,19 +38,23 @@ nnoremap <A-l> <C-w>l
 "nnoremap <leader>j :wincmd j<CR>
 "nnoremap <leader>k :wincmd k<CR>
 "nnoremap <leader>l :wincmd l<CR>
+" Slect block remap
+nnoremap <C-q> g CTRL-H
 " Sizing window horizontally
 nnoremap <C-[> <C-W><
 nnoremap <C-]> <C-W>>
 nnoremap <leader>. :vertical resize +5<CR>
 nnoremap <leader>, :vertical resize -5<CR>
 " Sizing window vertically
-nnoremap <S-i> :resize +2<CR>
-nnoremap <S-u> :resize -2<CR>
+nnoremap <C-i> :resize +2<CR>
+nnoremap <C-u> :resize -2<CR>
 " hide search(find) highlight
 nnoremap <leader>h :nohl<CR>:echo "Search Cleared"<CR>
 " toggle line number between relative and norelative
 nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
 nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
+" tabs
+nnoremap <leader>t :tabnew<Space>
 " open File Explorer
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
@@ -70,12 +76,13 @@ set tabstop=4 softtabstop=4
 set shiftwidth=4
 set expandtab
 set smartindent
-
+set autoindent
 set number  " line number
 set nocompatible   "no compatibility to Vi
 set hidden
 set ruler " Show file stats
 set relativenumber  " reletive line numbers
+set nrformats+=alpha  " increment and decrement alphabets also
 set nowrap "no wrap when line exceeds screen
 set smartcase "case-sensitive search if search patter contains uppercase character
 " Persist changes in undodir. Can access the changes even after reboot
@@ -83,8 +90,9 @@ set noswapfile
 set nobackup
 set undofile
 set undodir=~/.vim/undodir
-"set wildmenu  " Turn on the Wild menu
+set wildmenu  " command-line completion operates in an enhanced mode
 set colorcolumn=80
+set textwidth=79
 set hlsearch  " Highlight search results
 set incsearch " incremental search
 set showmatch  " Show matching brackets when text indicator is over them
@@ -122,6 +130,8 @@ endfun
 augroup SUMANTH_YEDOTI
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
+    " auto save
+    "autocmd TextChanged,TextChangedI <buffer> silent write
 augroup END
 
 let g:netrw_banner = 0  " no help information at top for netrw
@@ -148,6 +158,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
 call plug#end()
 
+" let g:airline_powerline_fonts = 1  " arrowed blocks in status line
 let g:coc_global_extensions = [
     \ 'coc-emmet',
     \ 'coc-css',
@@ -168,11 +179,11 @@ nmap <leader>gr <Plug>(coc-references)
 
 source $HOME/.vim/nerdcommenter.vim
 if has('nvim')
+    highlight Normal guibg=none
     source $HOME/.vim/coc.vim
 endif
 
 colorscheme gruvbox " 'nord', 'gruvbox'
-highlight Normal guibg=none
 set bg=dark  " 'dark', 'light'
 
 " Toggle NERDTree
