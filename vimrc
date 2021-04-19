@@ -28,7 +28,7 @@ nnoremap <Down> <C-e>
 nnoremap <Right> gt
 nnoremap <Left>  gT
 " close tabs
-nnoremap <C-w> :tabclose<CR>
+nnoremap <C-e> :tabclose<CR>
 " split window navigation
 nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
@@ -59,7 +59,7 @@ nnoremap <leader>t :tabnew<Space>
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
 inoremap {} {<CR>}<Esc>ko
-inoremap { {   }<Esc>hhi
+inoremap { {   }<Escn>hhi
 inoremap {{   {{   }}<Esc>hhhi
 inoremap ( ()<Esc>i
 
@@ -101,6 +101,8 @@ set scrolloff=4  " scroll offset
 set cmdheight=2
 set signcolumn=yes
 set completeopt=menuone
+"set spell
+"set spelllang=en_us
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
 "set guicursor=  " use block cursor
@@ -153,6 +155,9 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdcommenter'
+Plug 'Yggdroot/indentLine'
+Plug 'machakann/vim-highlightedyank'
+
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
@@ -187,9 +192,15 @@ colorscheme gruvbox " 'nord', 'gruvbox'
 set bg=dark  " 'dark', 'light'
 
 " Toggle NERDTree
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+nnoremap <silent> <C-n> :NERDTreeToggle<CR>
 " Close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
+" enable line numbers
+let NERDTreeShowLineNumbers=1
+" make sure relative line numbers are used
+autocmd FileType nerdtree setlocal relativenumber
+
+let g:highlightedyank_highlight_duration = 250
