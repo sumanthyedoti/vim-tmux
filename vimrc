@@ -6,6 +6,8 @@ syntax on  " syntax hightlighting
 
 "map Esc key to 'jj'
 imap jj <Esc>
+imap <buffer> <C-o> <esc>o
+imap <buffer> <C-;> <esc>A;  " add semicolon
 let mapleader = " "  " map leader key (\) to Space bar
 
 " Disbale 'ZZ' command to save and quit
@@ -49,7 +51,9 @@ nnoremap <leader>, :vertical resize -5<CR>
 nnoremap <C-i> :resize +2<CR>
 nnoremap <C-u> :resize -2<CR>
 " hide search(find) highlight
-nnoremap <leader>h :nohl<CR>:echo "Search Cleared"<CR>
+" Clear search (highlight)
+"nnoremap <leader>h :nohl<CR>:echo "Search Cleared"<CR>
+map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
 " toggle line number between relative and norelative
 nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
 nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
@@ -58,10 +62,10 @@ nnoremap <leader>t :tabnew<Space>
 " open File Explorer
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
-inoremap {} {<CR>}<Esc>ko
-inoremap { {   }<Escn>hhi
-inoremap {{   {{   }}<Esc>hhhi
-inoremap ( ()<Esc>i
+"inoremap {} {<CR>}<Esc>ko
+"inoremap { {   }<Escn>hhi
+"inoremap {{   {{   }}<Esc>hhhi
+"inoremap ( ()<Esc>i
 
 " Easier Moving between splits
 nnoremap <C-J> <C-W><C-J>
@@ -70,6 +74,11 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 " Make windows to be basically the same size
 nnoremap <leader>= <C-w>=
+function! BreakHere()
+    s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
+    call histdel("/", -1)
+endfunction
+nnoremap <key> :<C-u>call BreakHere()<CR>
 
 " tabs
 set tabstop=4 softtabstop=4
@@ -79,7 +88,7 @@ set smartindent
 set autoindent
 set number  " line number
 set nocompatible   "no compatibility to Vi
-set hidden
+set hidden  " Allow hidden buffers. Buffer becomes hidden when it is abandonedj
 set ruler " Show file stats
 set relativenumber  " reletive line numbers
 set nrformats+=alpha  " increment and decrement alphabets also
@@ -95,23 +104,37 @@ set colorcolumn=80
 set textwidth=79
 set hlsearch  " Highlight search results
 set incsearch " incremental search
+set ignorecase
 set showmatch  " Show matching brackets when text indicator is over them
 set mat=2  " How many tenths of a second to blink when matching brackets
 set scrolloff=4  " scroll offset
 set cmdheight=2
 set signcolumn=yes
 set completeopt=menuone
+set visualbell
+set listchars=tab:▸-,eol:¬
+" sycn with system clipboard
+set clipboard=unnamed
+set clipboard=unnamedplus
+" map delete without copying to <leader>dd
+nnoremap <leader>dd "_dd
+"set foldcolumn=1  " Add a bit extra margin to the left
 "set spell
 "set spelllang=en_us
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
 "set guicursor=  " use block cursor
+set magic  " For regular expressions turn magic on
+highlight CursorLine ctermbg=red
 
 " To derive project root
 if executable('rg')
     let g:rg_derive_root='true'
 endif
-
+" Enable 256 colors palette in Gnome Terminal
+if $COLORTERM == 'gnome-terminal'
+    set t_Co=256
+endif
 function! ToggleRelativeNumber()
     if &relativenumber
         set norelativenumber
@@ -137,7 +160,7 @@ augroup SUMANTH_YEDOTI
 augroup END
 
 let g:netrw_banner = 0  " no help information at top for netrw
-let loaded_netrwPlugin = 1  " disable netrw
+let loaded_netrwelugin = 1  " disable netrw
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
@@ -155,7 +178,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdcommenter'
-Plug 'Yggdroot/indentLine'
+"Plug 'Yggdroot/indentLine'
 Plug 'machakann/vim-highlightedyank'
 
 " Themes
@@ -174,7 +197,6 @@ let g:coc_global_extensions = [
     \ 'coc-snippets',
     \ 'coc-pairs',
     \]
-
 
 nnoremap <leader>ut :UndotreeToggle<CR>
 nnoremap <C-p> :GFiles<CR>
