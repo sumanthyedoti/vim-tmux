@@ -9,10 +9,12 @@ imap jj <Esc>
 imap <buffer> <C-o> <esc>o
 imap <buffer> <C-;> <esc>A;  " add semicolon
 let mapleader = " "  " map leader key (\) to Space bar
-
 " Disbale 'ZZ' command to save and quit
 nnoremap Z <C-o>:echom "--> :w :q <-- "<CR>
 nnoremap ZZ <C-o>:echom "--> :w :q <-- "<CR>
+" Date with F3
+nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
 " Insert mode navigation
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
@@ -112,7 +114,9 @@ set cmdheight=2
 set signcolumn=yes
 set completeopt=menuone
 set visualbell
-set listchars=tab:▸-,eol:¬
+set list
+set listchars=tab::\ ,eol:¬,extends:>,precedes:<
+
 " sycn with system clipboard
 set clipboard=unnamed
 set clipboard=unnamedplus
@@ -165,6 +169,7 @@ call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree'
 Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdtree'
@@ -178,8 +183,10 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdcommenter'
-"Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine'
 Plug 'machakann/vim-highlightedyank'
+Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips'
 
 " Themes
 Plug 'arcticicestudio/nord-vim'
