@@ -15,11 +15,6 @@ nnoremap ZZ <C-o>:echom "--> :w :q <-- "<CR>
 " Date with F3
 nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
-" Insert mode navigation
-inoremap <C-h> <Left>
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
 " disable arrow in insert mode
 inoremap <Up>     <C-o>:echom "--> k <-- "<CR>
 inoremap <Down>   <C-o>:echom "--> j <-- "<CR>
@@ -34,10 +29,6 @@ nnoremap <Left>  gT
 " close tabs
 nnoremap <C-e> :tabclose<CR>
 " split window navigation
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
 "nnoremap <leader>h :wincmd h<CR>
 "nnoremap <leader>j :wincmd j<CR>
 "nnoremap <leader>k :wincmd k<CR>
@@ -60,7 +51,7 @@ map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
 nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
 nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
 " tabs
-nnoremap <leader>t :tabnew<Space>
+nnoremap <C-n> :tabnew<Space>
 " open File Explorer
 nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " closing brace {}
@@ -69,13 +60,25 @@ nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 "inoremap {{   {{   }}<Esc>hhhi
 "inoremap ( ()<Esc>i
 
+" Make windows to be basically the same size
+nnoremap <leader>= <C-w>=
+" Insert mode navigation
+inoremap <C-j> <Down>
+inoremap <C-h> <Left>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+" Moving lines up or down
+nnoremap <C-j> Vh :m .+1<CR>gv=gv
+nnoremap <C-k> Vh :m .-2<CR>gv=gv
+inoremap <leader>j <Esc>:m .+1<CR>==gi
+inoremap <leader>k <Esc>:m .-2<CR>==gi
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
 " Easier Moving between splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-" Make windows to be basically the same size
-nnoremap <leader>= <C-w>=
 function! BreakHere()
     s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
     call histdel("/", -1)
@@ -185,8 +188,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdcommenter'
 Plug 'Yggdroot/indentLine'
 Plug 'machakann/vim-highlightedyank'
-Plug 'honza/vim-snippets'
-Plug 'SirVer/ultisnips'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'vim-test/vim-test'
 
 " Themes
 Plug 'arcticicestudio/nord-vim'
@@ -221,7 +224,7 @@ colorscheme gruvbox " 'nord', 'gruvbox'
 set bg=dark  " 'dark', 'light'
 
 " Toggle NERDTree
-nnoremap <silent> <C-n> :NERDTreeToggle<CR>
+nnoremap <silent> <leader>n :NERDTreeToggle<CR>
 " Close nvim if NERDTree is only thing left open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let g:NERDTreeShowHidden = 1
@@ -229,7 +232,19 @@ let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
 " enable line numbers
 let NERDTreeShowLineNumbers=1
+let g:UltiSnipsExpandTrigger="<tab>"
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 " make sure relative line numbers are used
 autocmd FileType nerdtree setlocal relativenumber
 
-let g:highlightedyank_highlight_duration = 250
+let g:highlightedyank_highlight_duration = 350
+
+" vim-test mappings
+nmap <silent> t<C-n> :TestNearest<CR>
+nmap <silent> t<C-f> :TestFile<CR>
+nmap <silent> t<C-s> :TestSuite<CR>
+nmap <silent> t<C-l> :TestLast<CR>
+nmap <silent> t<C-v> :TestVisit<CR>
+" make test commands execute using dispatch.vim
+let test#strategy = "dispatch"
