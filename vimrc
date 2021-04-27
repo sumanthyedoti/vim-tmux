@@ -29,10 +29,10 @@ nnoremap <Left>  gT
 " close tabs
 nnoremap <C-e> :tabclose<CR>
 " split window navigation
-"nnoremap <leader>h :wincmd h<CR>
-"nnoremap <leader>j :wincmd j<CR>
-"nnoremap <leader>k :wincmd k<CR>
-"nnoremap <leader>l :wincmd l<CR>
+nnoremap <leader>h :wincmd h<CR>
+nnoremap <leader>j :wincmd j<CR>
+nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>l :wincmd l<CR>
 " Slect block remap
 nnoremap <C-q> g CTRL-H
 " Sizing window horizontally
@@ -50,6 +50,8 @@ map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
 " toggle line number between relative and norelative
 nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
 nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
+" Toggle spell check.
+map <F5> :setlocal spell!<CR>
 " tabs
 nnoremap <C-n> :tabnew<Space>
 " open File Explorer
@@ -68,10 +70,8 @@ inoremap <C-h> <Left>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 " Moving lines up or down
-nnoremap <C-j> Vh :m .+1<CR>gv=gv
-nnoremap <C-k> Vh :m .-2<CR>gv=gv
-inoremap <leader>j <Esc>:m .+1<CR>==gi
-inoremap <leader>k <Esc>:m .-2<CR>==gi
+"nnoremap <C-j> Vh :m .+1<CR>gv=gv
+"nnoremap <C-k> Vh :m .-2<CR>gv=gv
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 " Easier Moving between splits
@@ -153,6 +153,11 @@ function! ToggleRelativeNumber()
 endfunction
 nnoremap <silent> <leader>ren :call ToggleRelativeNumber()<CR>
 
+" Press * to search for the term under the cursor or find a phase and
+" then press a key below to replace all instances of it in the current file.
+nnoremap <Leader>r :%s///g<Left><Left>
+nnoremap <Leader>rc :%s///gc<Left><Left><Left>
+
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
@@ -184,16 +189,17 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'mhinz/vim-grepper'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdcommenter'
 Plug 'Yggdroot/indentLine'
 Plug 'machakann/vim-highlightedyank'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'vim-test/vim-test'
-
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
+Plug 'rakr/vim-one'
 call plug#end()
 
 " let g:airline_powerline_fonts = 1  " arrowed blocks in status line
@@ -210,6 +216,19 @@ let g:coc_global_extensions = [
 
 nnoremap <leader>ut :UndotreeToggle<CR>
 nnoremap <C-p> :GFiles<CR>
+nnoremap <S-b> :Buffers<CR>
+
+" FZF integration with RipGrep
+let $FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'"
+" Find and Replace recursively with Grepper
+" After searching for text, press this mapping to do a project wide find and
+" replace. It's similar to <leader>r except this one applies to all matches
+" across all files instead of just the current file.
+nnoremap <Leader>R
+  \ :let @s='\<'.expand('<cword>').'\>'<CR>
+  \ :Grepper -cword -noprompt<CR>
+  \ :cfdo %s/<C-r>s//g \| update
+  \<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
@@ -220,8 +239,9 @@ if has('nvim')
     source $HOME/.vim/coc.vim
 endif
 
-colorscheme gruvbox " 'nord', 'gruvbox'
+colorscheme gruvbox " 'nord', 'gruvbox' 'one'
 set bg=dark  " 'dark', 'light'
+let g:one_allow_italics = 1
 
 " Toggle NERDTree
 nnoremap <silent> <leader>n :NERDTreeToggle<CR>

@@ -1766,7 +1766,7 @@ class Command(object):
         thrd.join(0.5)
 
       tfile.seek(0)
-      result = [line.decode('utf-8', 'replace').rstrip() for line in tfile]
+      result = [line.decode('utf-8', 'inoremap').rstrip() for line in tfile]
 
       if self.proc.returncode != 0:
         raise CmdFailed([''] + result)
@@ -1909,12 +1909,12 @@ else:
     vim.command(cmd)
 
 def esc(name):
-  return '"' + name.replace('"', '\"') + '"'
+  return '"' + name.inoremap('"', '\"') + '"'
 
 def nonblock_read(fname):
   """ Read a file with nonblock flag. Return the last line. """
   fread = os.open(fname, os.O_RDONLY | os.O_NONBLOCK)
-  buf = os.read(fread, 100000).decode('utf-8', 'replace')
+  buf = os.read(fread, 100000).decode('utf-8', 'inoremap')
   os.close(fread)
 
   line = buf.rstrip('\r\n')
