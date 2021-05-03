@@ -107,6 +107,7 @@ set undodir=~/.vim/undodir
 set wildmenu  " command-line completion operates in an enhanced mode
 set textwidth=80
 set colorcolumn=+1
+highlight ColorColumn ctermbg=0 guibg=lightgrey
 set hlsearch  " Highlight search results
 set incsearch " incremental search
 set ignorecase
@@ -128,11 +129,11 @@ nnoremap <leader>dd "_dd
 "set foldcolumn=1  " Add a bit extra margin to the left
 "set spell
 "set spelllang=en_us
-"set cursorline  " highlight current line with underline
+" set cursorline  " highlight current line with underline
+" hi CursorLine term=bold cterm=bold guibg=Grey40
 "set exrc  " execute project specific .vimrc
 " set guicursor=i:blinkwait700-blinkon500-blinkoff150  " use block cursor
 set magic  " For regular expressions turn magic on
-highlight CursorLine ctermbg=red
 
 " To derive project root
 if executable('rg')
@@ -164,13 +165,28 @@ fun! TrimWhitespace()
     call winrestview(l:save)
 endfun
 
+function SetCursorLine()
+  set cursorline  " highlight current line with underline
+  hi CursorLine term=bold cterm=bold guibg=Grey40
+endfunction
+function SetNoCursorLine()
+  set nocursorline  " highlight current line with underline
+endfunction
 augroup SUMANTH_YEDOTI
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
     autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '%>80v.\+', -1)
     " auto save
     "autocmd TextChanged,TextChangedI <buffer> silent write
+    autocmd InsertEnter * call SetCursorLine()
+    autocmd InsertLeave * call SetNoCursorLine()
 augroup END
+" Only highlight current window
+" augroup CursorLine
+"   au!
+"   au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+"   au WinLeave * setlocal nocursorline
+" augroup END
 
 let g:netrw_banner = 0  " no help information at top for netrw
 let loaded_netrwelugin = 1  " disable netrw
@@ -274,14 +290,3 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-v> :TestVisit<CR>
 " make test commands execute using dispatch.vim
 let test#strategy = "dispatch"
-
-set cursorcolumn          "Highlight current column
-set cursorline            "Highlight current row
-
-hi CursorLine   cterm=NONE ctermfg=LightGray
-" Only highlight current window
-augroup CursorLine
-  au!
-  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
-  au WinLeave * setlocal nocursorline
-augroup END
