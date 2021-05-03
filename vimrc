@@ -2,7 +2,7 @@
 filetype plugin on
 filetype indent on
 
-syntax on  " syntax hightlighting
+syntax on  " syntax highlighting
 
 "map Esc key to 'jj'
 imap jj <Esc>
@@ -29,12 +29,19 @@ nnoremap <Down> <C-e>
 nnoremap <Right> gt
 nnoremap <Left>  gT
 " close tabs
-nnoremap <C-e> :tabclose<CR>
+nnoremap <C-c> :tabclose<CR>
+
+" Insert mode navigation
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-h> <Esc>bi
+inoremap <C-l> <Esc>eli
 " split window navigation
-nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
+nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>l :wincmd l<CR>
+
 " Slect block remap
 nnoremap <C-q> g CTRL-H
 " Sizing window horizontally
@@ -43,12 +50,12 @@ nnoremap <C-]> <C-W>>
 nnoremap <leader>. :vertical resize +5<CR>
 nnoremap <leader>, :vertical resize -5<CR>
 " Sizing window vertically
-nnoremap <C-i> :resize +2<CR>
-nnoremap <C-u> :resize -2<CR>
+nnoremap <C-j> :resize +2<CR>
+nnoremap <C-k> :resize -2<CR>
 " hide search(find) highlight
 " Clear search (highlight)
-"nnoremap <leader>h :nohl<CR>:echo "Search Cleared"<CR>
-map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
+" map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
+map <leader><space> :noh<CR>
 " toggle line number between relative and norelative
 nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
 nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
@@ -66,21 +73,12 @@ nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 
 " Make windows to be basically the same size
 nnoremap <leader>= <C-w>=
-" Insert mode navigation
-inoremap <C-j> <Down>
-inoremap <C-h> <Left>
-inoremap <C-k> <Up>
-inoremap <C-l> <Right>
 " Moving lines up or down
 "nnoremap <C-j> Vh :m .+1<CR>gv=gv
 "nnoremap <C-k> Vh :m .-2<CR>gv=gv
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
-" Easier Moving between splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+
 function! BreakHere()
     s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
     call histdel("/", -1)
@@ -107,8 +105,8 @@ set nobackup
 set undofile
 set undodir=~/.vim/undodir
 set wildmenu  " command-line completion operates in an enhanced mode
-set colorcolumn=80
-set textwidth=79
+set textwidth=80
+set colorcolumn=+1
 set hlsearch  " Highlight search results
 set incsearch " incremental search
 set ignorecase
@@ -117,12 +115,12 @@ set mat=2  " How many tenths of a second to blink when matching brackets
 set scrolloff=4  " scroll offset
 set cmdheight=2
 set signcolumn=yes
-set completeopt=menuone
+set completeopt=menuone,noinsert,noselect
 set visualbell
 set list
 set listchars=tab::\ ,eol:¬,extends:>,precedes:<
 
-" sycn with system clipboard
+" sync with system clipboard
 set clipboard=unnamed
 set clipboard=unnamedplus
 " map delete without copying to <leader>dd
@@ -132,7 +130,7 @@ nnoremap <leader>dd "_dd
 "set spelllang=en_us
 "set cursorline  " highlight current line with underline
 "set exrc  " execute project specific .vimrc
-"set guicursor=  " use block cursor
+" set guicursor=i:blinkwait700-blinkon500-blinkoff150  " use block cursor
 set magic  " For regular expressions turn magic on
 highlight CursorLine ctermbg=red
 
@@ -169,6 +167,7 @@ endfun
 augroup SUMANTH_YEDOTI
     autocmd!
     autocmd BufWritePre * :call TrimWhitespace()
+    autocmd BufWinEnter * let w:m2=matchadd('ErrorMsg', '%>80v.\+', -1)
     " auto save
     "autocmd TextChanged,TextChangedI <buffer> silent write
 augroup END
@@ -178,6 +177,7 @@ let loaded_netrwelugin = 1  " disable netrw
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
+Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-fugitive'
 Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree'
@@ -274,3 +274,14 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-v> :TestVisit<CR>
 " make test commands execute using dispatch.vim
 let test#strategy = "dispatch"
+
+set cursorcolumn          "Highlight current column
+set cursorline            "Highlight current row
+
+hi CursorLine   cterm=NONE ctermfg=LightGray
+" Only highlight current window
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au WinLeave * setlocal nocursorline
+augroup END
