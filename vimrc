@@ -56,9 +56,6 @@ nnoremap <C-k> :resize -2<CR>
 " Clear search (highlight)
 " map <leader><space> :let @/=''<CR><bar>:<CR>" clear search
 map <leader><space> :noh<CR>
-" toggle line number between relative and norelative
-nnoremap <leader>n :set norelativenumber<CR>:echo "Reletive numbers turned off."<CR>
-nnoremap <leader>r :set relativenumber<CR>:set number<CR>:echo "Relative numbers turned on."<CR>
 " Toggle spell check.
 map <F5> :setlocal spell!<CR>
 " tabs
@@ -126,6 +123,8 @@ set clipboard=unnamed
 set clipboard=unnamedplus
 " map delete without copying to <leader>dd
 nnoremap <leader>dd "_dd
+" delete selected text without copying and paste
+vnoremap <leader>p "_dP
 "set foldcolumn=1  " Add a bit extra margin to the left
 "set spell
 "set spelllang=en_us
@@ -215,6 +214,10 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'vim-test/vim-test'
 Plug 'tpope/vim-eunuch'
+Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
+Plug 'rust-lang/rust.vim'
+Plug 'rescript-lang/vim-rescript'
+
 " Themes
 Plug 'arcticicestudio/nord-vim'
 Plug 'morhetz/gruvbox'
@@ -237,7 +240,7 @@ nnoremap <leader>ut :UndotreeToggle<CR>
 nnoremap <C-p> :GFiles<CR>
 nnoremap <S-b> :Buffers<CR>
 
-" FZF integration with RipGrep
+" FZF integration with RipGrep -> :Rg search_pattern
 let $FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'"
 " Find and Replace recursively with Greppeg
 " After searching for text, press this mapping to do a project wide find and
@@ -264,8 +267,10 @@ let g:one_allow_italics = 1
 
 " Toggle NERDTree
 nnoremap <silent> <leader>n :NERDTreeToggle<CR>
-" Close nvim if NERDTree is only thing left open
+" Exit Vim if NERDTree is the only window left.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
@@ -290,3 +295,14 @@ nmap <silent> t<C-l> :TestLast<CR>
 nmap <silent> t<C-v> :TestVisit<CR>
 " make test commands execute using dispatch.vim
 let test#strategy = "dispatch"
+
+" rescript
+"""""""""""
+autocmd FileType rescript nnoremap <silent> <buffer> <leader>rf :RescriptFormat<CR>
+autocmd FileType rescript nnoremap <silent> <buffer> <leader>rt :RescriptTypeHint<CR>
+autocmd FileType rescript nnoremap <silent> <buffer> <leader>rb :RescriptBuild<CR>
+autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
+" Hooking up the ReScript autocomplete function
+set omnifunc=rescript#Complete
+" " When preview is enabled, omnicomplete will display additional information for a selected item
+set completeopt+=preview
