@@ -41,6 +41,7 @@ nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>l :wincmd l<CR>
+nnoremap <C-l> <C-w><C-w>
 
 " Slect block remap
 nnoremap <C-q> g CTRL-H
@@ -153,7 +154,7 @@ function! ToggleRelativeNumber()
 endfunction
 nnoremap <silent> <leader>ren :call ToggleRelativeNumber()<CR>
 
-" Press * to search for the term under the cursor or find a phase and
+" Press * to search for the term under the cursor or find a phrase and
 " then press a key below to replace all instances of it in the current file.
 nnoremap <Leader>r :%s///g<Left><Left>
 nnoremap <Leader>rc :%s///gc<Left><Left><Left>
@@ -179,6 +180,7 @@ augroup SUMANTH_YEDOTI
     "autocmd TextChanged,TextChangedI <buffer> silent write
     autocmd InsertEnter * call SetCursorLine()
     autocmd InsertLeave * call SetNoCursorLine()
+    autocmd BufNewFile,BufRead *.html.heex  set syntax=html
 augroup END
 " Only highlight current window
 " augroup CursorLine
@@ -192,8 +194,9 @@ let loaded_netrwelugin = 1  " disable netrw
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
-Plug 'tmhedberg/matchit'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-obsession'
+Plug 'tmhedberg/matchit'
 Plug 'mhinz/vim-signify'
 Plug 'mbbill/undotree'
 Plug 'vim-airline/vim-airline'
@@ -217,6 +220,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'rust-lang/rust.vim'
 Plug 'rescript-lang/vim-rescript'
+Plug 'elixir-editors/vim-elixir'
 
 " Themes
 Plug 'arcticicestudio/nord-vim'
@@ -234,6 +238,7 @@ let g:coc_global_extensions = [
     \ 'coc-tsserver',
     \ 'coc-snippets',
     \ 'coc-pairs',
+    \ 'coc-elixir',
     \]
 
 nnoremap <leader>ut :UndotreeToggle<CR>
