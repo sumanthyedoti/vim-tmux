@@ -14,6 +14,12 @@ let mapleader = " "  " map leader key (\) to Space bar
 " Disbale 'ZZ' command to save and quit
 nnoremap Z <C-o>:echom "--> :w :q <-- "<CR>
 nnoremap ZZ <C-o>:echom "--> :w :q <-- "<CR>
+" yank util EOL instead of whole line. Matching the behavious of D, C
+nnoremap Y y$
+" Keep cursor at center and in place with n and N(search) and J
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
 " Date with F3
 nmap <F3> i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
@@ -32,10 +38,11 @@ nnoremap <Left>  gT
 nnoremap <C-c> :tabclose<CR>
 
 " Insert mode navigation
-inoremap <C-j> <Down>
-inoremap <C-k> <Up>
-inoremap <C-h> <Esc>bi
-inoremap <C-l> <Esc>eli
+" for mac, the actual characters are mapped
+inoremap ˚ <Up>
+inoremap ∆ <Down>
+inoremap ˙ <Esc>bi
+inoremap ¬ <Esc>eli
 " split window navigation
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
@@ -72,8 +79,10 @@ nnoremap <leader>ex :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 " Make windows to be basically the same size
 nnoremap <leader>= <C-w>=
 " Moving lines up or down
-"nnoremap <C-j> Vh :m .+1<CR>gv=gv
-"nnoremap <C-k> Vh :m .-2<CR>gv=gv
+nnoremap <C-j> mm:m .+1<CR>`m
+nnoremap <C-k> mm:m .-2<CR>`m
+inoremap <C-j> <esc>mm:m .+1<CR>`ma
+inoremap <C-k> <esc>mm:m .-2<CR>`ma
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
 
@@ -87,6 +96,7 @@ nnoremap <key> :<C-u>call BreakHere()<CR>
 set tabstop=2 softtabstop=2
 set shiftwidth=2
 set expandtab
+set smarttab
 set smartindent
 set autoindent
 set number  " line number
@@ -100,12 +110,12 @@ set smartcase "case-sensitive search if search patter contains uppercase charact
 " Persist changes in undodir. Can access the changes even after reboot
 set noswapfile
 set nobackup
+set autoread
 set undofile
 set undodir=~/.vim/undodir
 set wildmenu  " command-line completion operates in an enhanced mode
 set textwidth=80
 set colorcolumn=+1
-highlight ColorColumn ctermbg=0 guibg=lightgrey
 set hlsearch  " Highlight search results
 set incsearch " incremental search
 set ignorecase
@@ -167,7 +177,7 @@ endfun
 
 function SetCursorLine()
   set cursorline  " highlight current line with underline
-  hi CursorLine term=bold cterm=bold guibg=Grey40
+  hi CursorLine term=bold cterm=bold guibg=Grey20
 endfunction
 function SetNoCursorLine()
   set nocursorline  " highlight current line with underline
@@ -180,7 +190,7 @@ augroup SUMANTH_YEDOTI
     "autocmd TextChanged,TextChangedI <buffer> silent write
     autocmd InsertEnter * call SetCursorLine()
     autocmd InsertLeave * call SetNoCursorLine()
-    autocmd BufNewFile,BufRead *.html.heex  set syntax=html
+    " autocmd BufNewFile,BufRead *.html.heex  set syntax=html
 augroup END
 " Only highlight current window
 " augroup CursorLine
@@ -205,6 +215,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'chemzqm/vim-jsx-improve'
+Plug 'mattn/emmet-vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -224,6 +235,7 @@ Plug 'elixir-editors/vim-elixir'
 
 " Themes
 Plug 'arcticicestudio/nord-vim'
+Plug 'overcache/NeoSolarized'
 Plug 'morhetz/gruvbox'
 Plug 'rakr/vim-one'
 call plug#end()
@@ -234,11 +246,14 @@ let g:coc_global_extensions = [
     \ 'coc-css',
     \ 'coc-html',
     \ 'coc-json',
+    \ 'coc-yaml',
     \ 'coc-prettier',
     \ 'coc-tsserver',
     \ 'coc-snippets',
     \ 'coc-pairs',
     \ 'coc-elixir',
+    \ 'coc-tailwindcss',
+    \ 'coc-styled-components',
     \]
 
 nnoremap <leader>ut :UndotreeToggle<CR>
@@ -266,8 +281,10 @@ if has('nvim')
     source $HOME/.vim/coc.vim
 endif
 
-colorscheme gruvbox " 'nord', 'gruvbox' 'one'
+colorscheme NeoSolarized " 'NeoSolarized', 'nord', 'gruvbox' 'one'
+highlight ColorColumn ctermbg=0 guibg=lightgrey
 set bg=dark  " 'dark', 'light'
+set termguicolors "use RGB colors in TUI
 let g:one_allow_italics = 1
 
 " Toggle NERDTree
