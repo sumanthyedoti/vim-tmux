@@ -85,6 +85,8 @@ inoremap <C-j> <esc>mm:m .+1<CR>`ma
 inoremap <C-k> <esc>mm:m .-2<CR>`ma
 vnoremap <C-j> :m '>+1<CR>gv=gv
 vnoremap <C-k> :m '<-2<CR>gv=gv
+" split line into new line
+nnoremap <leader>nl i<CR><ESC>
 
 function! BreakHere()
     s/^\(\s*\)\(.\{-}\)\(\s*\)\(\%#\)\(\s*\)\(.*\)/\1\2\r\1\4\6
@@ -122,12 +124,14 @@ set ignorecase
 set showmatch  " Show matching brackets when text indicator is over them
 set mat=2  " How many tenths of a second to blink when matching brackets
 set scrolloff=4  " scroll offset
-set cmdheight=2
+set cmdheight=1
 set signcolumn=yes
 set completeopt=menuone,noinsert,noselect
 set visualbell
 set list
 set listchars=tab::\ ,eol:¬,extends:>,precedes:<
+set encoding=UTF-8
+set guifont="Fira Code Regular"
 
 " sync with system clipboard
 set clipboard=unnamed
@@ -139,8 +143,6 @@ vnoremap <leader>p "_dP
 "set foldcolumn=1  " Add a bit extra margin to the left
 "set spell
 "set spelllang=en_us
-" set cursorline  " highlight current line with underline
-" hi CursorLine term=bold cterm=bold guibg=Grey40
 "set exrc  " execute project specific .vimrc
 " set guicursor=i:blinkwait700-blinkon500-blinkoff150  " use block cursor
 set magic  " For regular expressions turn magic on
@@ -177,7 +179,7 @@ endfun
 
 function SetCursorLine()
   set cursorline  " highlight current line with underline
-  hi CursorLine term=bold cterm=bold guibg=Grey20
+  hi CursorLine term=bold cterm=bold guibg=Grey18
 endfunction
 function SetNoCursorLine()
   set nocursorline  " highlight current line with underline
@@ -204,6 +206,7 @@ let loaded_netrwelugin = 1  " disable netrw
 call plug#begin('~/.vim/plugged')
 " Make sure you use single quotes
 Plug 'tpope/vim-surround'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-obsession'
 Plug 'tmhedberg/matchit'
@@ -232,15 +235,17 @@ Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'rust-lang/rust.vim'
 Plug 'rescript-lang/vim-rescript'
 Plug 'elixir-editors/vim-elixir'
+Plug 'Olical/conjure'
 
 " Themes
+Plug 'flazz/vim-colorschemes'
 Plug 'arcticicestudio/nord-vim'
 Plug 'overcache/NeoSolarized'
 Plug 'morhetz/gruvbox'
 Plug 'rakr/vim-one'
 call plug#end()
 
-" let g:airline_powerline_fonts = 1  " arrowed blocks in status line
+let g:airline_powerline_fonts = 1  " arrowed blocks in status line
 let g:coc_global_extensions = [
     \ 'coc-emmet',
     \ 'coc-css',
@@ -260,7 +265,7 @@ nnoremap <leader>ut :UndotreeToggle<CR>
 nnoremap <C-p> :GFiles<CR>
 nnoremap <S-b> :Buffers<CR>
 
-" FZF integration with RipGrep -> :Rg search_pattern
+"" FZF integration with RipGrep -> :Rg search_pattern
 let $FZF_DEFAULT_COMMAND = "rg --files --hidden --follow --glob '!.git'"
 " Find and Replace recursively with Greppeg
 " After searching for text, press this mapping to do a project wide find and
@@ -275,20 +280,30 @@ nnoremap <Leader>R
 nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
 
+"" CoC Prettier
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+"" IndentLine
+let g:vim_json_conceal=0
+let g:markdown_syntax_conceal=0
+
 source $HOME/.vim/nerdcommenter.vim
 if has('nvim')
     highlight Normal guibg=none
     source $HOME/.vim/coc.vim
 endif
 
-colorscheme NeoSolarized " 'NeoSolarized', 'nord', 'gruvbox' 'one'
-highlight ColorColumn ctermbg=0 guibg=lightgrey
+colorscheme gruvbox " 'NeoSolarized', 'nord', 'gruvbox' 'one'
+highlight ColorColumn ctermbg=0 guibg=Grey40
 set bg=dark  " 'dark', 'light'
 set termguicolors "use RGB colors in TUI
 let g:one_allow_italics = 1
 
 " Toggle NERDTree
-nnoremap <silent> <leader>n :NERDTreeToggle<CR>
+nnoremap <silent> <leader>n :NERDTreeFocus<CR>
+nnoremap <silent> <leader>m :NERDTreeClose<CR>
 " Exit Vim if NERDTree is the only window left.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " Open the existing NERDTree on each new tab.
