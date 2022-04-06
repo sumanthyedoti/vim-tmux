@@ -36,6 +36,9 @@ nnoremap <Right> gt
 nnoremap <Left>  gT
 " close tabs
 nnoremap <C-c> :tabclose<CR>
+" move tabs
+nnoremap <leader>< :tabmove -1<CR>
+nnoremap <leader>> :tabmove +1<CR>
 
 " Insert mode navigation
 " for mac, the actual characters are mapped
