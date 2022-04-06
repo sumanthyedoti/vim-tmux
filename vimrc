@@ -284,9 +284,12 @@ nmap <leader>gd <Plug>(coc-defination)
 nmap <leader>gr <Plug>(coc-references)
 
 "" CoC Prettier
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
 vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
+"" Coc Enable Disbale
+nnoremap <leader>C :CocEnable<CR>
+nnoremap <leader>D :CocDisable<CR>
 
 "" IndentLine
 let g:vim_json_conceal=0
