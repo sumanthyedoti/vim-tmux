@@ -316,13 +316,13 @@ set bg=dark  " 'dark', 'light'
 set termguicolors "use RGB colors in TUI
 let g:one_allow_italics = 1
 
-" Toggle NERDTree
+"" Toggle NERDTree
 nnoremap <silent> <leader>n :NERDTreeFocus<CR>
 nnoremap <silent> <leader>m :NERDTreeClose<CR>
-" Exit Vim if NERDTree is the only window left.
+"" Exit Vim if NERDTree is the only window left.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Open the existing NERDTree on each new tab.
-autocmd BufWinEnter * silent NERDTreeMirror
+"" Open the existing NERDTree on each new tab.
+" autocmd BufWinEnter * silent NERDTreeMirror
 let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
